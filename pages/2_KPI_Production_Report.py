@@ -117,11 +117,21 @@ def main() -> None:
                 "scrap_pct",
                 "downtime_hr",
             ]
-        ].rename(
+        ]
+        .rename(
             columns={
                 "attainment": "attainment %",
                 "scrap_pct": "scrap %",
                 "downtime_hr": "downtime (h)",
+            }
+        )
+        .assign(
+            **{
+                "attainment %": lambda df: (df["attainment %"] * 100).map(
+                    "{:.1f}%".format
+                ),
+                "scrap %": lambda df: df["scrap %"].map("{:.2f}%".format),
+                "downtime (h)": lambda df: df["downtime (h)"].map("{:.1f}".format),
             }
         ),
         use_container_width=True,
